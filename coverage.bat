@@ -4,8 +4,8 @@ setlocal
 
 call ..\Certification\set_tokens.bat
 
-set PROJECTNAME=Method.Contracts.Analyzers
-set TOKEN=%METHOD_CONTRACTS_ANALYZERS_CODECOV_TOKEN%
+set PROJECTNAME=DebugLogging
+set TOKEN=%DEBUGLOGGING_CODECOV_TOKEN%
 set TESTPROJECTNAME=%PROJECTNAME%.Test
 set PLATFORM=x64
 set CONFIGURATION=Debug
