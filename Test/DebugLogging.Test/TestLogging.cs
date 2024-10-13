@@ -32,6 +32,15 @@ public class TestLogging
     }
 
     [Test]
+    public void TestBeginScopeNull()
+    {
+        DebugLogger TestObject = new();
+        const string NullString = null!;
+
+        _ = Assert.Throws<ArgumentNullException>(() => TestObject.BeginScope(NullString));
+    }
+
+    [Test]
     public void TestLog()
     {
         DebugLogger TestObject = new();
@@ -40,10 +49,31 @@ public class TestLogging
     }
 
     [Test]
+    public void TestLogNull()
+    {
+        DebugLogger TestObject = new();
+        const string NullString = null!;
+        const string TestString = "Test Scope";
+        const Func<string, Exception?, string> NullFormatter = null!;
+
+        _ = Assert.Throws<ArgumentNullException>(() => TestObject.Log(LogLevel.None, (EventId)0, NullString, null, (object state, Exception? exception) => { return $"{state}"; }));
+        _ = Assert.Throws<ArgumentNullException>(() => TestObject.Log(LogLevel.None, (EventId)0, TestString, null, NullFormatter));
+    }
+
+    [Test]
     public void TestLogSimple()
     {
         DebugLogger TestObject = new();
 
         TestObject.Log("Test Scope");
+    }
+
+    [Test]
+    public void TestLogSimpleNull()
+    {
+        DebugLogger TestObject = new();
+        const string NullString = null!;
+
+        _ = Assert.Throws<ArgumentNullException>(() => TestObject.Log(NullString));
     }
 }

@@ -37,8 +37,10 @@ public class DebugLogger : ILogger
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
 #if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(state);
         ArgumentNullException.ThrowIfNull(formatter);
 #else
+        if (state is null) throw new ArgumentNullException(nameof(state));
         if (formatter is null) throw new ArgumentNullException(nameof(formatter));
 #endif
 
