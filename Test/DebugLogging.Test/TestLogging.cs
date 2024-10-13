@@ -23,10 +23,12 @@ public class TestLogging
     public void TestBeginScope()
     {
         DebugLogger TestObject = new();
+        const string TestString = "Test Scope";
 
-        using IDisposable? Scope = TestObject.BeginScope("Test Scope");
+        using LoggingScope? Scope = TestObject.BeginScope(TestString) as LoggingScope;
 
         Assert.That(Scope, Is.Not.Null);
+        Assert.That(Scope.State, Is.EqualTo(TestString));
     }
 
     [Test]
@@ -35,5 +37,13 @@ public class TestLogging
         DebugLogger TestObject = new();
 
         TestObject.Log(LogLevel.None, (EventId)0, "Test Scope", null, (object state, Exception? exception) => { return $"{state}"; });
+    }
+
+    [Test]
+    public void TestLogSimple()
+    {
+        DebugLogger TestObject = new();
+
+        TestObject.Log("Test Scope");
     }
 }
