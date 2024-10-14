@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 /// </summary>
 public class DebugLogger : ILogger
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ILogger.BeginScope{TState}(TState)"/>
     public IDisposable? BeginScope<TState>(TState state)
         where TState : notnull
     {
@@ -27,13 +27,13 @@ public class DebugLogger : ILogger
     /// </summary>
     public LogLevel DefaultLevel { get; set; } = LogLevel.Debug;
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ILogger.IsEnabled"/>
     public bool IsEnabled(LogLevel logLevel)
     {
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ILogger.Log"/>
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
 #if NET8_0_OR_GREATER
