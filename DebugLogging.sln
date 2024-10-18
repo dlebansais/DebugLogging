@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugLogging", "DebugLoggin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugLogging.Test", "Test\DebugLogging.Test\DebugLogging.Test.csproj", "{8EE8B5D1-D362-4FD2-BC5F-94C0AB769ED3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugLogDisplay", "DebugLogDisplay\DebugLogDisplay.csproj", "{47312C77-3F11-42BD-96C7-39D3AE3D7D8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,9 @@ Global
 		{8EE8B5D1-D362-4FD2-BC5F-94C0AB769ED3}.Debug|x64.Build.0 = Debug|x64
 		{8EE8B5D1-D362-4FD2-BC5F-94C0AB769ED3}.Release|x64.ActiveCfg = Release|x64
 		{8EE8B5D1-D362-4FD2-BC5F-94C0AB769ED3}.Release|x64.Build.0 = Release|x64
+		{47312C77-3F11-42BD-96C7-39D3AE3D7D8B}.Debug|x64.ActiveCfg = Debug|x64
+		{47312C77-3F11-42BD-96C7-39D3AE3D7D8B}.Debug|x64.Build.0 = Debug|x64
+		{47312C77-3F11-42BD-96C7-39D3AE3D7D8B}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,10 @@
 
 using System;
 using System.IO;
+using System.Reflection;
+using Contracts;
 using Microsoft.Extensions.Logging;
+using ProcessCommunication;
 
 /// <summary>
 /// Represents a debug-time oriented logger.
@@ -65,9 +68,21 @@ public class DebugLogger : ILogger
 
     private static void LogMessage(LogLevel logLevel, string message)
     {
-        using FileStream Stream = new("test.txt", FileMode.Append, FileAccess.Write);
-        using StreamWriter Writer = new(Stream);
+        if (LogChannel is null)
+        {
+            using Stream? Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(DebugLogger).Assembly.GetName().Name}.Resources.ChannelGuid.txt");
+            Stream ResourceStream = Contract.AssertNotNull(Stream);
+            using StreamReader Reader = new(ResourceStream);
+            string GuidString = Reader.ReadToEnd();
+            Guid ChannelGuid = new(GuidString);
 
-        Writer.Write($"{message}\n");
+            LogChannel = new(ChannelGuid, Mode.Send);
+            LogChannel.Open();
+        }
+
+        if (LogChannel.IsOpen)
+            LogChannel.Write(Converter.EncodeString(message));
     }
+
+    private static Channel? LogChannel;
 }
