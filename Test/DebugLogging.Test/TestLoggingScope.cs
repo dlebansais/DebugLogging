@@ -1,9 +1,5 @@
-﻿#pragma warning disable CA1848 // Use the LoggerMessage delegates
+﻿namespace DebugLogging.Test;
 
-namespace DebugLogging.Test;
-
-using System;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 [TestFixture]

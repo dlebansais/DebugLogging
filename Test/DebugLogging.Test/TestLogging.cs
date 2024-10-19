@@ -81,7 +81,7 @@ public class TestLogging
     {
         DebugLogger TestObject = new();
 
-#if NETFRAMEWORK
+#if NET8_0_OR_GREATER
         TestObject.DisplayAppName = "Foo.exe";
 #endif
 
