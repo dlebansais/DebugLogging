@@ -12,7 +12,7 @@ public class TestLogging
     [Test]
     public void TestSuccess()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
 
         Assert.That(TestObject, Is.Not.Null);
         Assert.That(TestObject.IsEnabled(TestObject.DefaultLevel), Is.True);
@@ -22,7 +22,7 @@ public class TestLogging
     [Test]
     public void TestBeginScope()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
         const string TestString = "Test Scope";
 
         using LoggingScope? Scope = TestObject.BeginScope(TestString) as LoggingScope;
@@ -34,7 +34,7 @@ public class TestLogging
     [Test]
     public void TestBeginScopeNull()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
 
         _ = Assert.Throws<ArgumentNullException>(() => TestObject.BeginScope(NullString));
@@ -43,7 +43,7 @@ public class TestLogging
     [Test]
     public void TestLog()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
 
         TestObject.Log(LogLevel.None, (EventId)0, "Test Scope", null, (object state, Exception? exception) => { return $"{state}"; });
     }
@@ -51,7 +51,7 @@ public class TestLogging
     [Test]
     public void TestLogNull()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
         const string TestString = "Test Scope";
         const Func<string, Exception?, string> NullFormatter = null!;
@@ -63,7 +63,7 @@ public class TestLogging
     [Test]
     public void TestLogSimple()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
 
         TestObject.Log("Test Scope");
     }
@@ -71,9 +71,20 @@ public class TestLogging
     [Test]
     public void TestLogSimpleNull()
     {
-        DebugLogger TestObject = new();
+        DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
 
         _ = Assert.Throws<ArgumentNullException>(() => TestObject.Log(NullString));
+    }
+
+    private static DebugLogger CreateTestLogger()
+    {
+        DebugLogger TestObject = new();
+
+#if NETFRAMEWORK
+        TestObject.DisplayAppName = "Foo.exe";
+#endif
+
+        return TestObject;
     }
 }

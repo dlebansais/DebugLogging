@@ -13,6 +13,11 @@ using ProcessCommunication;
 /// </summary>
 public class DebugLogger : ILogger
 {
+    /// <summary>
+    /// Gets or sets the name of the application used to display logs.
+    /// </summary>
+    public string DisplayAppName { get; set; } = "DebugLogDisplay.exe";
+
     /// <inheritdoc cref="ILogger.BeginScope{TState}(TState)"/>
     public IDisposable? BeginScope<TState>(TState state)
         where TState : notnull
@@ -67,7 +72,7 @@ public class DebugLogger : ILogger
         LogMessage(DefaultLevel, message);
     }
 
-    private static void LogMessage(LogLevel logLevel, string message)
+    private void LogMessage(LogLevel logLevel, string message)
     {
         if (LogChannel is null)
         {
@@ -77,7 +82,7 @@ public class DebugLogger : ILogger
             string GuidString = Reader.ReadToEnd();
             Guid ChannelGuid = new(GuidString);
 
-            string PathToProccess = Remote.GetSiblingFullPath("DebugLogDisplay.exe");
+            string PathToProccess = Remote.GetSiblingFullPath(DisplayAppName);
             LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid);
         }
 
