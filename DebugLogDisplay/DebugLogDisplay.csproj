@@ -2,7 +2,8 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFrameworks>net481;net8.0-windows7.0</TargetFrameworks>
+        <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
         <UseWPF>true</UseWPF>
@@ -72,12 +73,8 @@
 
         <PackageReference Include="Method.Contracts-Debug" Version="1.6.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
         <PackageReference Include="Method.Contracts" Version="1.6.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="ProcessCommunication">
-            <HintPath>..\..\ProcessCommunication\ProcessCommunication\bin\x64\$(Configuration)\$(TargetFramework)\ProcessCommunication.dll</HintPath>
-        </Reference>
+        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="1.0.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication" Version="1.0.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SolutionDir)'!='*Undefined*'">

@@ -1,6 +1,7 @@
 ﻿namespace DebugLogging;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Contracts;
@@ -76,13 +77,29 @@ public class DebugLogger : ILogger
             string GuidString = Reader.ReadToEnd();
             Guid ChannelGuid = new(GuidString);
 
-            LogChannel = new(ChannelGuid, Mode.Send);
-            LogChannel.Open();
+            string PathToProccess = Remote.GetSiblingFullPath("DebugLogDisplay.exe");
+            LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid);
         }
 
-        if (LogChannel.IsOpen)
-            LogChannel.Write(Converter.EncodeString(message));
+        if (LogChannel is not null && LogChannel.IsOpen)
+        {
+            while (QueuedMessages.Count > 0)
+                LogMessage(LogChannel, QueuedMessages.Dequeue());
+
+            LogMessage(LogChannel, message);
+        }
+        else if (QueuedMessages.Count < 10)
+            QueuedMessages.Enqueue(message);
+    }
+
+    private static void LogMessage(Channel channel, string message)
+    {
+        byte[] Data = Converter.EncodeString(message);
+
+        if (channel.GetFreeLength() < Data.Length)
+            channel.Write(Data);
     }
 
     private static Channel? LogChannel;
+    private static readonly Queue<string> QueuedMessages = new();
 }
