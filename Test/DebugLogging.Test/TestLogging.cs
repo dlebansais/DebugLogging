@@ -136,9 +136,7 @@ public class TestLogging
         DebugLogger TestObject = new();
 
 #if NETFRAMEWORK
-        //TestObject.DisplayAppName = "Foo.exe";
-        TestObject.DisplayAppArguments = ExitDelay.ToString(CultureInfo.InvariantCulture);
-        TestObject.MaxInitQueueSize = 10;
+        TestObject.DisplayAppName = "Foo.exe";
 #else
         TestObject.DisplayAppArguments = ExitDelay.ToString(CultureInfo.InvariantCulture);
         TestObject.MaxInitQueueSize = 10;
