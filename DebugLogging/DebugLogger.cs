@@ -116,7 +116,7 @@ public class DebugLogger : ILogger, IDisposable
     {
         byte[] Data = Converter.EncodeString(message);
 
-        if (channel.GetFreeLength() < Data.Length)
+        if (Data.Length <= channel.GetFreeLength())
             channel.Write(Data);
     }
 

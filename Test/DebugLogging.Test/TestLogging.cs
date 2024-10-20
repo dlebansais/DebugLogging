@@ -5,6 +5,7 @@ namespace DebugLogging.Test;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
@@ -49,6 +50,8 @@ public class TestLogging
     [Test]
     public async Task TestLog()
     {
+        Remote.Reset();
+
         using DebugLogger TestObject = CreateTestLogger();
 
         TestObject.Log(LogLevel.None, (EventId)0, "Test Scope", null, (object state, Exception? exception) => { return $"{state}"; });
@@ -71,6 +74,8 @@ public class TestLogging
     [Test]
     public async Task TestLogSimple()
     {
+        Remote.Reset();
+
         using DebugLogger TestObject = CreateTestLogger();
         Stopwatch LaunchStopwatch = Stopwatch.StartNew();
 
@@ -100,12 +105,40 @@ public class TestLogging
         using DebugLoggerChild TestObject = new();
     }
 
+    [Test]
+    public async Task TestBigLog()
+    {
+        Remote.Reset();
+
+        using DebugLogger TestObject = CreateTestLogger();
+        Stopwatch LaunchStopwatch = Stopwatch.StartNew();
+
+        int MessageLength = (Channel.Capacity * 3) / (TestObject.MaxInitQueueSize * 2);
+
+        StringBuilder MessageBuilder = new();
+        for (int i = 0; i < MessageLength; i++)
+            MessageBuilder = MessageBuilder.Append('x');
+
+        string Message = MessageBuilder.ToString();
+
+        for (int i = 0; i < TestObject.MaxInitQueueSize; i++)
+            TestObject.Log(Message);
+
+        await Task.Delay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
+
+        TestObject.Log("Empty queue");
+
+        await Task.Delay(TimeSpan.FromSeconds(ExitDelay) + TimeSpan.FromSeconds(1)).ConfigureAwait(true);
+    }
+
     private static DebugLogger CreateTestLogger()
     {
         DebugLogger TestObject = new();
 
 #if NETFRAMEWORK
-        TestObject.DisplayAppName = "Foo.exe";
+        //TestObject.DisplayAppName = "Foo.exe";
+        TestObject.DisplayAppArguments = ExitDelay.ToString(CultureInfo.InvariantCulture);
+        TestObject.MaxInitQueueSize = 10;
 #else
         TestObject.DisplayAppArguments = ExitDelay.ToString(CultureInfo.InvariantCulture);
         TestObject.MaxInitQueueSize = 10;
