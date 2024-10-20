@@ -69,9 +69,11 @@ public class TestLogging
         using DebugLogger TestObject = CreateTestLogger();
         Stopwatch LaunchStopwatch = Stopwatch.StartNew();
 
-        TestObject.Log("Test Scope");
+        TestObject.Log("Test Scope 1");
 
         await Task.Delay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
+
+        TestObject.Log("Test Scope 2");
     }
 
     [Test]
