@@ -23,6 +23,11 @@ public class DebugLogger : ILogger, IDisposable
     /// </summary>
     public string? DisplayAppArguments { get; set; }
 
+    /// <summary>
+    /// Gets or sets the maximum number of messages queued until they can be displayed.
+    /// </summary>
+    public int MaxInitQueueSize { get; set; } = 1000;
+
     /// <inheritdoc cref="ILogger.BeginScope{TState}(TState)"/>
     public IDisposable? BeginScope<TState>(TState state)
         where TState : notnull
@@ -98,8 +103,13 @@ public class DebugLogger : ILogger, IDisposable
 
             LogMessage(LogChannel, message);
         }
-        else if (QueuedMessages.Count < 10)
+        else
+        {
+            if (QueuedMessages.Count >= MaxInitQueueSize)
+                _ = QueuedMessages.Dequeue();
+
             QueuedMessages.Enqueue(message);
+        }
     }
 
     private static void LogMessage(Channel channel, string message)
