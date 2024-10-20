@@ -26,15 +26,26 @@ public partial class App : Application, IDisposable
         string GuidString = Reader.ReadToEnd();
         Guid ChannelGuid = new(GuidString);
 
-        LogChannel = new(ChannelGuid, Mode.Receive);
+        LogChannel = new Channel(ChannelGuid, Mode.Receive);
         LogChannel.Open();
 
         if (!LogChannel.IsOpen)
             Process.GetCurrentProcess().Kill();
 
-        PollingTimer = new(new TimerCallback(PollingTimerCallback));
+        PollingTimer = new Timer(new TimerCallback(PollingTimerCallback));
         TimeSpan PollingInterval = TimeSpan.FromMilliseconds(20);
         _ = PollingTimer.Change(PollingInterval, PollingInterval);
+
+        ExitTimer = new Timer(new TimerCallback(ExitTimerCallback));
+
+        Startup += OnStartup;
+    }
+
+    private void OnStartup(object sender, StartupEventArgs e)
+    {
+        string[] Args = e.Args;
+        if (Args.Length > 0 && int.TryParse(Args[0], out int MaxDuration))
+            _ = ExitTimer.Change(TimeSpan.FromSeconds(MaxDuration), Timeout.InfiniteTimeSpan);
     }
 
     private void PollingTimerCallback(object? parameter)
@@ -60,6 +71,11 @@ public partial class App : Application, IDisposable
         }
     }
 
+    private void ExitTimerCallback(object? parameter)
+    {
+        _ = Dispatcher.BeginInvoke(new Action(() => Current.Shutdown()));
+    }
+
     /// <summary>
     /// Optionally disposes of the instance.
     /// </summary>
@@ -72,6 +88,7 @@ public partial class App : Application, IDisposable
             {
                 LogChannel.Dispose();
                 PollingTimer.Dispose();
+                ExitTimer.Dispose();
             }
 
             disposedValue = true;
@@ -88,5 +105,6 @@ public partial class App : Application, IDisposable
     private readonly Timer PollingTimer;
     private DispatcherOperation? PollingOperation;
     private readonly Channel LogChannel;
+    private readonly Timer ExitTimer;
     private bool disposedValue;
 }

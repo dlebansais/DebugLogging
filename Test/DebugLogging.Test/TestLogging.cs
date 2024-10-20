@@ -3,8 +3,11 @@
 namespace DebugLogging.Test;
 
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using ProcessCommunication;
 
 [TestFixture]
 public class TestLogging
@@ -12,7 +15,7 @@ public class TestLogging
     [Test]
     public void TestSuccess()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
 
         Assert.That(TestObject, Is.Not.Null);
         Assert.That(TestObject.IsEnabled(TestObject.DefaultLevel), Is.True);
@@ -22,7 +25,7 @@ public class TestLogging
     [Test]
     public void TestBeginScope()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
         const string TestString = "Test Scope";
 
         using LoggingScope? Scope = TestObject.BeginScope(TestString) as LoggingScope;
@@ -34,7 +37,7 @@ public class TestLogging
     [Test]
     public void TestBeginScopeNull()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
 
         _ = Assert.Throws<ArgumentNullException>(() => TestObject.BeginScope(NullString));
@@ -43,7 +46,7 @@ public class TestLogging
     [Test]
     public void TestLog()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
 
         TestObject.Log(LogLevel.None, (EventId)0, "Test Scope", null, (object state, Exception? exception) => { return $"{state}"; });
     }
@@ -51,7 +54,7 @@ public class TestLogging
     [Test]
     public void TestLogNull()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
         const string TestString = "Test Scope";
         const Func<string, Exception?, string> NullFormatter = null!;
@@ -61,17 +64,20 @@ public class TestLogging
     }
 
     [Test]
-    public void TestLogSimple()
+    public async Task TestLogSimple()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
+        Stopwatch LaunchStopwatch = Stopwatch.StartNew();
 
         TestObject.Log("Test Scope");
+
+        await Task.Delay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
     }
 
     [Test]
     public void TestLogSimpleNull()
     {
-        DebugLogger TestObject = CreateTestLogger();
+        using DebugLogger TestObject = CreateTestLogger();
         const string NullString = null!;
 
         _ = Assert.Throws<ArgumentNullException>(() => TestObject.Log(NullString));
@@ -81,7 +87,11 @@ public class TestLogging
     {
         DebugLogger TestObject = new();
 
+#if NETFRAMEWORK
         TestObject.DisplayAppName = "Foo.exe";
+#else
+        TestObject.DisplayAppArguments = "20";
+#endif
 
         return TestObject;
     }

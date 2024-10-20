@@ -11,12 +11,17 @@ using ProcessCommunication;
 /// <summary>
 /// Represents a debug-time oriented logger.
 /// </summary>
-public class DebugLogger : ILogger
+public class DebugLogger : ILogger, IDisposable
 {
     /// <summary>
     /// Gets or sets the name of the application used to display logs.
     /// </summary>
     public string DisplayAppName { get; set; } = "DebugLogDisplay.exe";
+
+    /// <summary>
+    /// Gets or sets arguments when launching <see cref="DisplayAppName"/>.
+    /// </summary>
+    public string? DisplayAppArguments { get; set; }
 
     /// <inheritdoc cref="ILogger.BeginScope{TState}(TState)"/>
     public IDisposable? BeginScope<TState>(TState state)
@@ -83,7 +88,7 @@ public class DebugLogger : ILogger
             Guid ChannelGuid = new(GuidString);
 
             string PathToProccess = Remote.GetSiblingFullPath(DisplayAppName);
-            LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid);
+            LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid, DisplayAppArguments);
         }
 
         if (LogChannel is not null && LogChannel.IsOpen)
@@ -105,6 +110,31 @@ public class DebugLogger : ILogger
             channel.Write(Data);
     }
 
-    private static Channel? LogChannel;
-    private static readonly Queue<string> QueuedMessages = new();
+    /// <summary>
+    /// Optionally disposes of the instance.
+    /// </summary>
+    /// <param name="disposing">True if disposing must be done.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                LogChannel?.Dispose();
+            }
+
+            disposedValue = true;
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    private Channel? LogChannel;
+    private bool disposedValue;
+    private readonly Queue<string> QueuedMessages = new();
 }
