@@ -113,7 +113,7 @@ public class TestLogging
         using DebugLogger TestObject = CreateTestLogger();
         Stopwatch LaunchStopwatch = Stopwatch.StartNew();
 
-        int MessageLength = (Channel.Capacity * 3) / (TestObject.MaxInitQueueSize * 2);
+        int MessageLength = (MultiChannel.Capacity * 3) / (TestObject.MaxInitQueueSize * 2);
 
         StringBuilder MessageBuilder = new();
         for (int i = 0; i < MessageLength; i++)
@@ -121,10 +121,12 @@ public class TestLogging
 
         string Message = MessageBuilder.ToString();
 
+        // Fill the queue.
         for (int i = 0; i < TestObject.MaxInitQueueSize; i++)
             TestObject.Log(Message);
 
-        await Task.Delay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
+        TimeSpan Delay = TimeSpan.FromSeconds(Math.Max(0, (Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).TotalSeconds));
+        await Task.Delay(Delay).ConfigureAwait(true);
 
         TestObject.Log("Empty queue");
 
