@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -20,13 +21,10 @@ public partial class App : Application, IDisposable
     /// </summary>
     public App()
     {
-        using Stream? Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(App).Assembly.GetName().Name}.ChannelGuid.txt");
-        Stream ResourceStream = Contract.AssertNotNull(Stream);
-        using StreamReader Reader = new(ResourceStream);
-        string GuidString = Reader.ReadToEnd();
-        Guid ChannelGuid = new(GuidString);
+        Guid ChannelGuid = new(GetResourceContent("ChannelGuid.txt"));
+        int MaxChannelCount = int.Parse(GetResourceContent("MaxChannelCount.txt"), CultureInfo.InvariantCulture);
 
-        LogChannel = new Channel(ChannelGuid, Mode.Receive);
+        LogChannel = new MultiChannel(ChannelGuid, ChannelMode.Receive, MaxChannelCount);
         LogChannel.Open();
 
         if (!LogChannel.IsOpen)
@@ -39,6 +37,15 @@ public partial class App : Application, IDisposable
         ExitTimer = new Timer(new TimerCallback(ExitTimerCallback));
 
         Startup += OnStartup;
+    }
+
+    private static string GetResourceContent(string resourceName)
+    {
+        using Stream? Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(App).Assembly.GetName().Name}.{resourceName}");
+        Stream ResourceStream = Contract.AssertNotNull(Stream);
+        using StreamReader Reader = new(ResourceStream);
+
+        return Reader.ReadToEnd();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)
@@ -56,7 +63,7 @@ public partial class App : Application, IDisposable
 
     private void OnPolling()
     {
-        if (LogChannel.Read() is byte[] Data)
+        if (LogChannel.TryRead(out byte[] Data, out _))
         {
             MainWindow Window = (MainWindow)Current.MainWindow;
             int Offset = 0;
@@ -104,7 +111,7 @@ public partial class App : Application, IDisposable
 
     private readonly Timer PollingTimer;
     private DispatcherOperation? PollingOperation;
-    private readonly Channel LogChannel;
+    private readonly MultiChannel LogChannel;
     private readonly Timer ExitTimer;
     private bool disposedValue;
 }

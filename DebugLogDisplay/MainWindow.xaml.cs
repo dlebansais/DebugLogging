@@ -1,6 +1,7 @@
 ﻿namespace DebugLogDisplay;
 
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 
 /// <summary>
@@ -20,5 +21,10 @@ public partial class MainWindow : Window
     /// <summary>
     /// Gets the list og log messages.
     /// </summary>
-    public ObservableCollection<string> LogMessages { get; } = new() { "Displaying logs. v1.0.0" };
+    public ObservableCollection<string> LogMessages { get; } = new() { $"Displaying logs. v{GetVersion()}" };
+
+    private static string? GetVersion()
+    {
+        return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+    }
 }

@@ -9,14 +9,14 @@
         <UseWPF>true</UseWPF>
 
         <RootNamespace>DebugLogDisplay</RootNamespace>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Authors>David Le Bansais</Authors>
         <Company />
         <Product />
         <Description>A debug-time-oriented logging tool</Description>
         <Copyright>Copyright © 2024 David Le Bansais</Copyright>
-        <AssemblyVersion>1.0.2.3</AssemblyVersion>
-        <FileVersion>1.0.2.3</FileVersion>
+        <AssemblyVersion>1.0.3.4</AssemblyVersion>
+        <FileVersion>1.0.3.4</FileVersion>
         <RepositoryUrl>https://github.com/dlebansais/DebugLogging</RepositoryUrl>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
@@ -43,7 +43,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="..\DebugLogging\Resources\ChannelGuid.txt" />
+        <EmbeddedResource Include="..\DebugLogging\Resources\ChannelGuid.txt" />
+        <EmbeddedResource Include="..\DebugLogging\Resources\MaxChannelCount.txt" />
     </ItemGroup>
 
     <ItemGroup>
@@ -71,10 +72,10 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
 
-        <PackageReference Include="Method.Contracts-Debug" Version="1.6.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="Method.Contracts" Version="1.6.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="1.1.0" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication" Version="1.1.0" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="Method.Contracts-Debug" Version="1.7.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="Method.Contracts" Version="1.7.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="2.0.0" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication" Version="2.0.0" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SolutionDir)'!='*Undefined*'">

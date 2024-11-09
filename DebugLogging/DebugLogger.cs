@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using Contracts;
@@ -86,14 +87,11 @@ public class DebugLogger : ILogger, IDisposable
     {
         if (LogChannel is null)
         {
-            using Stream? Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(DebugLogger).Assembly.GetName().Name}.Resources.ChannelGuid.txt");
-            Stream ResourceStream = Contract.AssertNotNull(Stream);
-            using StreamReader Reader = new(ResourceStream);
-            string GuidString = Reader.ReadToEnd();
-            Guid ChannelGuid = new(GuidString);
+            Guid ChannelGuid = new(GetResourceContent("ChannelGuid.txt"));
+            int MaxChannelCount = int.Parse(GetResourceContent("MaxChannelCount.txt"), CultureInfo.InvariantCulture);
 
             string PathToProccess = Remote.GetSiblingFullPath(DisplayAppName);
-            LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid, DisplayAppArguments);
+            LogChannel = Remote.LaunchAndOpenChannel(PathToProccess, ChannelGuid, MaxChannelCount, DisplayAppArguments);
         }
 
         if (LogChannel is not null && LogChannel.IsOpen)
@@ -112,7 +110,16 @@ public class DebugLogger : ILogger, IDisposable
         }
     }
 
-    private static void LogMessage(Channel channel, string message)
+    private static string GetResourceContent(string resourceName)
+    {
+        using Stream? Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{typeof(DebugLogger).Assembly.GetName().Name}.Resources.{resourceName}");
+        Stream ResourceStream = Contract.AssertNotNull(Stream);
+        using StreamReader Reader = new(ResourceStream);
+
+        return Reader.ReadToEnd();
+    }
+
+    private static void LogMessage(IMultiChannel channel, string message)
     {
         byte[] Data = Converter.EncodeString(message);
 
@@ -144,7 +151,7 @@ public class DebugLogger : ILogger, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private Channel? LogChannel;
+    private IMultiChannel? LogChannel;
     private bool disposedValue;
     private readonly Queue<string> QueuedMessages = new();
 }
