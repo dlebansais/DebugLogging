@@ -82,7 +82,7 @@ public class TestLogging
         for (int i = 0; i < TestObject.MaxInitQueueSize + 1; i++)
             TestObject.Log($"Test Scope {i}");
 
-        await Task.Delay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
+        await WaitDelay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
 
         TestObject.Log("Test Scope more 1");
         TestObject.Log("Test Scope more 2");
@@ -125,8 +125,7 @@ public class TestLogging
         for (int i = 0; i < TestObject.MaxInitQueueSize; i++)
             TestObject.Log(Message);
 
-        TimeSpan Delay = TimeSpan.FromSeconds(Math.Max(0, (Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).TotalSeconds));
-        await Task.Delay(Delay).ConfigureAwait(true);
+        await WaitDelay(Timeouts.ProcessLaunchTimeout - TimeSpan.FromSeconds(1) - LaunchStopwatch.Elapsed).ConfigureAwait(true);
 
         TestObject.Log("Empty queue");
 
@@ -145,5 +144,11 @@ public class TestLogging
 #endif
 
         return TestObject;
+    }
+
+    private static async Task WaitDelay(TimeSpan delay)
+    {
+        TimeSpan MinZeroDelay = TimeSpan.FromSeconds(Math.Max(0, delay.TotalSeconds));
+        await Task.Delay(MinZeroDelay).ConfigureAwait(true);
     }
 }
