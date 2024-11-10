@@ -87,7 +87,7 @@ public class TestLogging
         TestObject.Log("Test Scope more 1");
         TestObject.Log("Test Scope more 2");
 
-        await Task.Delay(TimeSpan.FromSeconds(ExitDelay) + TimeSpan.FromSeconds(1)).ConfigureAwait(true);
+        await Task.Delay(TimeSpan.FromSeconds(ExitDelay) + TimeSpan.FromSeconds(10)).ConfigureAwait(true);
     }
 
     [Test]
@@ -129,7 +129,7 @@ public class TestLogging
 
         TestObject.Log("Empty queue");
 
-        await Task.Delay(TimeSpan.FromSeconds(ExitDelay) + TimeSpan.FromSeconds(1)).ConfigureAwait(true);
+        await Task.Delay(TimeSpan.FromSeconds(ExitDelay) + TimeSpan.FromSeconds(10)).ConfigureAwait(true);
     }
 
     private static DebugLogger CreateTestLogger()

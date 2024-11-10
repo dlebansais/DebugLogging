@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="Debug Log Display" Height="450" Width="800">
     <Grid>
-        <ItemsControl ItemsSource="{Binding LogMessages}"
-                      Background="Pink" Margin="5"/>
+        <ScrollViewer x:Name="logScrollViewer">
+            <ItemsControl ItemsSource="{Binding LogMessages}"
+                          Background="Pink" Margin="5"/>
+        </ScrollViewer>
     </Grid>
 </Window>

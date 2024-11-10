@@ -19,9 +19,19 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Gets the list og log messages.
+    /// Gets the list of log messages.
     /// </summary>
     public ObservableCollection<string> LogMessages { get; } = new() { $"Displaying logs. v{GetVersion()}" };
+
+    /// <summary>
+    /// Adds a message to the list of log messages.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public void AddMessage(string message)
+    {
+        LogMessages.Add(message);
+        logScrollViewer.ScrollToBottom();
+    }
 
     private static string? GetVersion()
     {

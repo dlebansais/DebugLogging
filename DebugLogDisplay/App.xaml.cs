@@ -51,8 +51,17 @@ public partial class App : Application, IDisposable
     private void OnStartup(object sender, StartupEventArgs e)
     {
         string[] Args = e.Args;
-        if (Args.Length > 0 && int.TryParse(Args[0], out int MaxDuration))
-            _ = ExitTimer.Change(TimeSpan.FromSeconds(MaxDuration), Timeout.InfiniteTimeSpan);
+        if (Args.Length > 0 && int.TryParse(Args[0], out int ParsedMaxDuration))
+        {
+            MaxDuration = ParsedMaxDuration;
+            UpdateExitTimer();
+
+            _ = Dispatcher.BeginInvoke(() =>
+            {
+                MainWindow Window = (MainWindow)Current.MainWindow;
+                Window.AddMessage($"Exit timeout set to {MaxDuration} seconds.");
+            });
+        }
     }
 
     private void PollingTimerCallback(object? parameter)
@@ -73,9 +82,17 @@ public partial class App : Application, IDisposable
                 if (!Converter.TryDecodeString(Data, ref Offset, out string Text))
                     break;
 
-                Window.LogMessages.Add(Text);
+                Window.AddMessage(Text);
             }
+
+            UpdateExitTimer();
         }
+    }
+
+    private void UpdateExitTimer()
+    {
+        if (MaxDuration > 0)
+            _ = ExitTimer.Change(TimeSpan.FromSeconds(MaxDuration), Timeout.InfiniteTimeSpan);
     }
 
     private void ExitTimerCallback(object? parameter)
@@ -114,4 +131,5 @@ public partial class App : Application, IDisposable
     private readonly MultiChannel LogChannel;
     private readonly Timer ExitTimer;
     private bool disposedValue;
+    private int MaxDuration;
 }
