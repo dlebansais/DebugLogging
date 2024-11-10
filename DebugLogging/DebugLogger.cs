@@ -87,6 +87,8 @@ public class DebugLogger : ILogger, IDisposable
     {
         if (LogChannel is null)
         {
+            Remote.Reset();
+
             Guid ChannelGuid = new(GetResourceContent("ChannelGuid.txt"));
             int MaxChannelCount = int.Parse(GetResourceContent("MaxChannelCount.txt"), CultureInfo.InvariantCulture);
 
