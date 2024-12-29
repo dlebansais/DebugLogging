@@ -4,7 +4,9 @@ namespace DebugLogging.Test;
 
 using System;
 using System.Diagnostics;
+#if !NETFRAMEWORK
 using System.Globalization;
+#endif
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -12,7 +14,7 @@ using NUnit.Framework;
 using ProcessCommunication;
 
 [TestFixture]
-public class TestLogging
+internal class TestLogging
 {
     private const int ExitDelay = 20;
 
@@ -113,7 +115,7 @@ public class TestLogging
         using DebugLogger TestObject = CreateTestLogger();
         Stopwatch LaunchStopwatch = Stopwatch.StartNew();
 
-        int MessageLength = (MultiChannel.Capacity * 3) / (TestObject.MaxInitQueueSize * 2);
+        int MessageLength = MultiChannel.Capacity * 3 / (TestObject.MaxInitQueueSize * 2);
 
         StringBuilder MessageBuilder = new();
         for (int i = 0; i < MessageLength; i++)

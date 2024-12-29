@@ -1,4 +1,6 @@
-﻿namespace DebugLogging;
+﻿#pragma warning disable IDE0060 // Remove unused parameter
+
+namespace DebugLogging;
 
 using System;
 using System.Collections.Generic;
@@ -48,10 +50,7 @@ public class DebugLogger : ILogger, IDisposable
     public LogLevel DefaultLevel { get; set; } = LogLevel.Debug;
 
     /// <inheritdoc cref="ILogger.IsEnabled"/>
-    public bool IsEnabled(LogLevel logLevel)
-    {
-        return true;
-    }
+    public bool IsEnabled(LogLevel logLevel) => true;
 
     /// <inheritdoc cref="ILogger.Log"/>
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
@@ -130,9 +129,9 @@ public class DebugLogger : ILogger, IDisposable
     }
 
     /// <summary>
-    /// Optionally disposes of the instance.
+    /// Disposes of managed and unmanaged resources.
     /// </summary>
-    /// <param name="disposing">True if disposing must be done.</param>
+    /// <param name="disposing"><see langword="True"/> if the method should dispose of resources; Otherwise, <see langword="false"/>.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)

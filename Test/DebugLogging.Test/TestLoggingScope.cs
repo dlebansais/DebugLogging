@@ -3,7 +3,7 @@
 using NUnit.Framework;
 
 [TestFixture]
-public class TestLoggingScope
+internal class TestLoggingScope
 {
     [Test]
     public void TestSuccess()

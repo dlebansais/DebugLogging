@@ -14,7 +14,7 @@ using ProcessCommunication;
 /// <summary>
 /// Interaction logic for App.xaml.
 /// </summary>
-public partial class App : Application, IDisposable
+internal partial class App : Application, IDisposable
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
@@ -96,14 +96,12 @@ public partial class App : Application, IDisposable
     }
 
     private void ExitTimerCallback(object? parameter)
-    {
-        _ = Dispatcher.BeginInvoke(new Action(() => Current.Shutdown()));
-    }
+        => _ = Dispatcher.BeginInvoke(new Action(Current.Shutdown));
 
     /// <summary>
-    /// Optionally disposes of the instance.
+    /// Disposes of managed and unmanaged resources.
     /// </summary>
-    /// <param name="disposing">True if disposing must be done.</param>
+    /// <param name="disposing"><see langword="True"/> if the method should dispose of resources; Otherwise, <see langword="false"/>.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)

@@ -26,9 +26,9 @@ public class LoggingScope : IDisposable
     private bool disposedValue;
 
     /// <summary>
-    /// Optionally disposes of the instance.
+    /// Disposes of managed and unmanaged resources.
     /// </summary>
-    /// <param name="disposing">True if disposing must be done.</param>
+    /// <param name="disposing"><see langword="True"/> if the method should dispose of resources; Otherwise, <see langword="false"/>.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)

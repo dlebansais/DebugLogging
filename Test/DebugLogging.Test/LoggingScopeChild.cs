@@ -1,12 +1,7 @@
 ﻿namespace DebugLogging.Test;
 
-public class LoggingScopeChild : LoggingScope
+internal class LoggingScopeChild(object state) : LoggingScope(state)
 {
-    public LoggingScopeChild(object state)
-        : base(state)
-    {
-    }
-
     protected override void Dispose(bool disposing)
     {
         // For coverage only. Validates the dispose pattern.

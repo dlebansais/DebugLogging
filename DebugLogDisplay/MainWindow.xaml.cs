@@ -1,4 +1,6 @@
-﻿namespace DebugLogDisplay;
+﻿#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
+namespace DebugLogDisplay;
 
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -7,7 +9,7 @@ using System.Windows;
 /// <summary>
 /// Interaction logic for MainWindow.xaml.
 /// </summary>
-public partial class MainWindow : Window
+internal partial class MainWindow : Window
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -21,7 +23,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// Gets the list of log messages.
     /// </summary>
-    public ObservableCollection<string> LogMessages { get; } = new() { $"Displaying logs. v{GetVersion()}" };
+    public ObservableCollection<string> LogMessages { get; } = [$"Displaying logs. v{GetVersion()}"];
 
     /// <summary>
     /// Adds a message to the list of log messages.
@@ -34,7 +36,5 @@ public partial class MainWindow : Window
     }
 
     private static string? GetVersion()
-    {
-        return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
-    }
+        => Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
 }

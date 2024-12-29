@@ -1,6 +1,6 @@
 ﻿namespace DebugLogging.Test;
 
-public class DebugLoggerChild : DebugLogger
+internal class DebugLoggerChild : DebugLogger
 {
     protected override void Dispose(bool disposing)
     {
