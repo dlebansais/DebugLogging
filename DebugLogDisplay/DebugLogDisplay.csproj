@@ -9,14 +9,14 @@
         <UseWPF>true</UseWPF>
 
         <RootNamespace>DebugLogDisplay</RootNamespace>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Authors>David Le Bansais</Authors>
         <Company />
         <Product />
         <Description>A debug-time-oriented logging tool</Description>
-        <Copyright>Copyright © 2024 David Le Bansais</Copyright>
-        <AssemblyVersion>2.0.0.9</AssemblyVersion>
-        <FileVersion>2.0.0.9</FileVersion>
+        <Copyright>Copyright © 2025 David Le Bansais</Copyright>
+        <AssemblyVersion>2.0.1.10</AssemblyVersion>
+        <FileVersion>2.0.1.10</FileVersion>
         <RepositoryUrl>https://github.com/dlebansais/DebugLogging</RepositoryUrl>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
@@ -52,11 +52,15 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="dlebansais.CSharpLatest" Version="2.1.2">
+        <PackageReference Include="Nullable.Extended.Analyzer" Version="1.15.6581">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="dlebansais.IDisposableAnalyzers" Version="4.0.8.9">
+        <PackageReference Include="dlebansais.IDisposableAnalyzers" Version="4.0.8.16">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="dlebansais.CSharpLatest" Version="2.1.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -67,25 +71,43 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Method.Contracts.Analyzers-Debug" Version="2.0.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Method.Contracts.Analyzers" Version="2.0.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
-        <PackageReference Include="Method.Contracts-Debug" Version="2.0.0" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="Method.Contracts" Version="2.0.0" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.0" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication" Version="3.0.0" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="Method.Contracts-Debug" Version="2.0.1" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="Method.Contracts" Version="2.0.1" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.2" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication" Version="3.0.2" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SolutionDir)'!='*Undefined*'">
         <Exec Command="if exist &quot;$(SolutionDir)updatecommit.bat&quot; call &quot;$(SolutionDir)updatecommit.bat&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetPath)&quot;" />
         <Exec Command="if exist &quot;$(SolutionDir)signfile.bat&quot; call &quot;$(SolutionDir)signfile.bat&quot; &quot;$(SolutionDir)&quot; &quot;$(Configuration)-$(Platform)&quot; &quot;$(TargetPath)&quot;" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-        <Exec Command="if not exist &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)&quot; mkdir &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)&quot;" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <Exec Command="if exist &quot;$(TargetPath)&quot; copy &quot;$(TargetDir)$(ProjectName).exe&quot; &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <Exec Command="if exist &quot;$(TargetPath)&quot; copy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <Exec Command="if exist &quot;$(TargetDir)*.runtimeconfig.json&quot; copy &quot;$(TargetDir)*.runtimeconfig.json&quot; &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <Exec Command="if exist &quot;$(TargetPath)&quot; copy &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;$(SolutionDir)nuget-debug\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <Exec Command="if not exist &quot;$(SolutionDir)nuget\tools\$(TargetFramework)&quot; mkdir &quot;$(SolutionDir)nuget\tools\$(TargetFramework)&quot;" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-        <Exec Command="if exist &quot;$(TargetPath)&quot; copy &quot;$(TargetDir)$(ProjectName).exe&quot; &quot;$(SolutionDir)nuget\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-        <Exec Command="if exist &quot;$(TargetPath)&quot; copy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)nuget\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-        <Exec Command="if exist &quot;$(TargetDir)*.runtimeconfig.json&quot; copy &quot;$(TargetDir)*.runtimeconfig.json&quot; &quot;$(SolutionDir)nuget\tools\$(TargetFramework)\&quot; &gt; nul" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+
+        <ItemGroup>
+            <None Remove="@(None)" />
+        </ItemGroup>
+
+        <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+            <None Include="$(TargetDir)$(ProjectName).exe" />
+            <None Include="$(TargetDir)$(ProjectName).pdb" />
+            <None Include="$(TargetDir)*.dll" />
+            <None Include="$(TargetDir)*.runtimeconfig.json" />
+        </ItemGroup>
+        <Copy SourceFiles="@(None)" DestinationFolder="$(SolutionDir)nuget-debug\tools\$(TargetFramework)\" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+
+        <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+            <None Include="$(TargetDir)$(ProjectName).exe" />
+            <None Include="$(TargetDir)*.dll" />
+            <None Include="$(TargetDir)*.runtimeconfig.json" />
+        </ItemGroup>
+        <Copy SourceFiles="@(None)" DestinationFolder="$(SolutionDir)nuget\tools\$(TargetFramework)\" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     </Target>
 
 </Project>
