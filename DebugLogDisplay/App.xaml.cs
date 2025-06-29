@@ -79,7 +79,7 @@ internal partial class App : Application, IDisposable
 
             while (Offset < Data.Length)
             {
-                if (!Converter.TryDecodeString(Data, ref Offset, out string Text))
+                if (!Converter.TryDecodeString(Data, ref Offset, out string? Text))
                     break;
 
                 Window.AddMessage(Text);
