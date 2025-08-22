@@ -9,14 +9,14 @@
         <UseWPF>true</UseWPF>
 
         <RootNamespace>DebugLogDisplay</RootNamespace>
-        <Version>2.0.2</Version>
+        <Version>2.0.4</Version>
         <Authors>David Le Bansais</Authors>
         <Company />
         <Product />
         <Description>A debug-time-oriented logging tool</Description>
         <Copyright>Copyright © 2025 David Le Bansais</Copyright>
-        <AssemblyVersion>2.0.2.11</AssemblyVersion>
-        <FileVersion>2.0.2.11</FileVersion>
+        <AssemblyVersion>2.0.4.13</AssemblyVersion>
+        <FileVersion>2.0.4.13</FileVersion>
         <RepositoryUrl>https://github.com/dlebansais/DebugLogging</RepositoryUrl>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
@@ -56,13 +56,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <!--
-        <PackageReference Include="dlebansais.IDisposableAnalyzers" Version="4.0.8.16">
+        <PackageReference Include="dlebansais.IDisposableAnalyzers" Version="4.0.8.17">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-         -->
-        <PackageReference Include="dlebansais.CSharpLatest" Version="2.1.3">
+        <PackageReference Include="dlebansais.CSharpLatest" Version="2.1.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -73,19 +71,19 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Method.Contracts.Analyzers-Debug" Version="2.0.3" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <PackageReference Include="dlebansais.Method.Contracts.Analyzers-Debug" Version="2.0.4" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Method.Contracts.Analyzers" Version="2.0.3" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'">
+        <PackageReference Include="dlebansais.Method.Contracts.Analyzers" Version="2.0.4" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Method.Contracts-Debug" Version="2.0.3" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="Method.Contracts" Version="2.0.3" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.4" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication" Version="3.0.4" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="dlebansais.Method.Contracts-Debug" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.Method.Contracts" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication" Version="3.0.6" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SolutionDir)'!='*Undefined*'">
