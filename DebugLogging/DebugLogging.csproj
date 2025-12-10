@@ -91,7 +91,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
         <PackageReference Include="dlebansais.Method.Contracts-Debug" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
         <PackageReference Include="dlebansais.Method.Contracts" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
         <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
