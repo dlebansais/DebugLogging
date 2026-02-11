@@ -79,7 +79,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.103">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="dlebansais.Method.Contracts.Analyzers-Debug" Version="2.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,7 +91,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
         <PackageReference Include="dlebansais.Method.Contracts-Debug" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
         <PackageReference Include="dlebansais.Method.Contracts" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
         <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
