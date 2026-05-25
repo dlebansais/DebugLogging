@@ -12,7 +12,7 @@
         <Company />
         <Product />
         <Description>A debug-time-oriented logging tool</Description>
-        <Copyright>Copyright © 2025 David Le Bansais</Copyright>
+        <Copyright>Copyright © 2026 David Le Bansais</Copyright>
         <AssemblyVersion>2.0.4.13</AssemblyVersion>
         <FileVersion>2.0.4.13</FileVersion>
         <RepositoryUrl>https://github.com/dlebansais/DebugLogging</RepositoryUrl>
