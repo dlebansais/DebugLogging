@@ -2,21 +2,21 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net481;net8.0-windows7.0;net9.0-windows7.0</TargetFrameworks>
-        <LangVersion>13</LangVersion>
+        <TargetFrameworks>net481;net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
         <UseWPF>true</UseWPF>
 
         <RootNamespace>DebugLogDisplay</RootNamespace>
-        <Version>2.0.4</Version>
+        <Version>2.0.5</Version>
         <Authors>David Le Bansais</Authors>
         <Company />
         <Product />
         <Description>A debug-time-oriented logging tool</Description>
         <Copyright>Copyright © 2026 David Le Bansais</Copyright>
-        <AssemblyVersion>2.0.4.13</AssemblyVersion>
-        <FileVersion>2.0.4.13</FileVersion>
+        <AssemblyVersion>2.0.5.114</AssemblyVersion>
+        <FileVersion>2.0.5.14</FileVersion>
         <RepositoryUrl>https://github.com/dlebansais/DebugLogging</RepositoryUrl>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
@@ -71,7 +71,7 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="dlebansais.Method.Contracts.Analyzers-Debug" Version="2.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <PackageReference Include="dlebansais.Method.Contracts.Analyzers-Debug" Version="2.0.10" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -80,9 +80,9 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="dlebansais.Method.Contracts-Debug" Version="2.0.5" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.Method.Contracts-Debug" Version="2.0.7" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
         <PackageReference Include="dlebansais.Method.Contracts" Version="2.0.7" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
-        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.6" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+        <PackageReference Include="dlebansais.ProcessCommunication-Debug" Version="3.0.7" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
         <PackageReference Include="dlebansais.ProcessCommunication" Version="3.0.7" Condition="'$(Configuration)|$(Platform)'!='Debug|x64'" />
     </ItemGroup>
 
