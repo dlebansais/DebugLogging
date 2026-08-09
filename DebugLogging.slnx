@@ -8,6 +8,9 @@
   <Project Path="DebugLogging/DebugLogging.csproj">
     <Platform Project="x64" />
   </Project>
+  <Project Path="Test/DebugLogging.Test.DotNetFramework/DebugLogging.Test.DotNetFramework.csproj">
+    <Platform Project="x64" />
+  </Project>
   <Project Path="Test/DebugLogging.Test/DebugLogging.Test.csproj">
     <BuildDependency Project="DebugLogDisplay/DebugLogDisplay.csproj" />
     <Platform Project="x64" />
