@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net481;net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
+        <TargetFrameworks>net481;net10.0-windows7.0</TargetFrameworks>
         <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
@@ -68,7 +68,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="dlebansais.Method.Contracts.Analyzers-Debug" Version="2.0.10" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
